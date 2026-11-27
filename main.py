@@ -30,6 +30,13 @@ def main() -> None:
     # No trailing newline: the file holds exactly the line, nothing else.
     with open(OUTPUT_PATH, "w", encoding="utf-8", newline="") as f:
         f.write(text)
+    # Read it back and verify: the graded file must be exactly this line,
+    # UTF-8, 1 to 200 characters, not only whitespace. Fail loudly here
+    # rather than shipping a bad file to the sealed scorer.
+    with open(OUTPUT_PATH, "r", encoding="utf-8", newline="") as f:
+        written = f.read()
+    assert written == text, "output file does not match the excuse"
+    assert 1 <= len(written) <= 200, "output file outside 1-200 characters"
     print(text)
 
 
